@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { Actions, FocusAction, UnfocusAction } from '../actions';
 import { FormGroupState, KeyValue, isGroupState } from '../state';
+import { clearAsyncErrorReducer } from './reducer/clear-async-error';
 import { addControlReducer } from './reducer/add-control';
 import { disableReducer } from './reducer/disable';
 import { enableReducer } from './reducer/enable';
@@ -11,10 +12,12 @@ import { markAsSubmittedReducer } from './reducer/mark-as-submitted';
 import { markAsTouchedReducer } from './reducer/mark-as-touched';
 import { markAsUnsubmittedReducer } from './reducer/mark-as-unsubmitted';
 import { markAsUntouchedReducer } from './reducer/mark-as-untouched';
+import { setAsyncErrorReducer } from './reducer/set-async-error';
 import { removeControlReducer } from './reducer/remove-control';
 import { setErrorsReducer } from './reducer/set-errors';
 import { setUserDefinedPropertyReducer } from './reducer/set-user-defined-property';
 import { setValueReducer } from './reducer/set-value';
+import { startAsyncValidationReducer } from './reducer/start-async-validation';
 import { childReducer } from './reducer/util';
 
 export function formGroupReducerInternal<TValue extends KeyValue>(state: FormGroupState<TValue>, action: Actions<TValue>) {
@@ -30,6 +33,9 @@ export function formGroupReducerInternal<TValue extends KeyValue>(state: FormGro
 
   state = setValueReducer(state, action);
   state = setErrorsReducer(state, action);
+  state = startAsyncValidationReducer(state, action);
+  state = setAsyncErrorReducer(state, action);
+  state = clearAsyncErrorReducer(state, action);
   state = enableReducer(state, action);
   state = disableReducer(state, action);
   state = markAsDirtyReducer(state, action);
