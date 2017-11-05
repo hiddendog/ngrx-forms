@@ -1,6 +1,7 @@
 import { ActionReducer } from '@ngrx/store';
 
 import {
+  ClearAsyncErrorAction,
   DisableAction,
   EnableAction,
   FocusAction,
@@ -68,6 +69,23 @@ describe('form control reducer', () => {
       const value = true;
       const state = { ...INITIAL_STATE, pendingValidations: [name], isValidationPending: true };
       const resultState = reducer(state, new SetAsyncErrorAction(FORM_CONTROL_ID, name, value));
+      expect(resultState).not.toBe(INITIAL_STATE);
+    });
+  });
+
+  describe(ClearAsyncErrorAction.name, () => {
+    it('should update state', () => {
+      const name = 'required';
+      const state = {
+        ...INITIAL_STATE,
+        isValid: false,
+        isInvalid: true,
+        errors: { ['$' + name]: true },
+        pendingValidations: [name],
+        isValidationPending: true,
+      };
+
+      const resultState = reducer(state, new ClearAsyncErrorAction(FORM_CONTROL_ID, name));
       expect(resultState).not.toBe(INITIAL_STATE);
     });
   });
